@@ -44,10 +44,12 @@ public class Application extends Controller {
    * @return The new contact page.
    */
   public static Result postContact() {
-    System.out.println("In post contact");
     Form<ContactFormData> formData = Form.form(ContactFormData.class).bindFromRequest();
-    ContactFormData data = formData.get();
-    System.out.format("%s %s %n%s", data.firstName, data.lastName, data.telephone);
-    return ok(NewContact.render(formData));
+    if (formData.hasErrors()) {
+      return badRequest(NewContact.render(formData));
+    }
+    else {
+      return ok(NewContact.render(formData));
+    }
   }
 }
